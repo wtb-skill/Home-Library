@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Add Book</title>
+{% endblock %}
+
+{% block content %}
+    <img src="/static/open_book.jpg" alt="Open Book">
+    <div id="display">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Read</th>
+                </tr>
+            </thead>
+            {% for book in books %}
+                <tr>
+                    <td><a href="{{ url_for('details', book_id=loop.index) }}">{{ book.title }}</a></td>
+                    <td>{{ book.author }}</td>
+                    {% if book.read_or_not %}
+                        <td>yes</td>
+                    {% else %}
+                        <td>no</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

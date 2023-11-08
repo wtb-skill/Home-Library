@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Edit</title>
+{% endblock %}
+
+{% block content %}
+    <img src="/static/menu_books.jpeg" alt="Menu Books">
+
+    <div id="edit">
+        <h2> Edit: </h2>
+        <form method="POST" action="/display/{{ book_id }}/">
+            {{ form.hidden_tag() }}
+            <table>
+                {% for field in form if field.widget.input_type != 'hidden' %}
+                    <tr>
+                        <th>{{ field.label }} {% if field.flags.required %}*{% endif %}</th>
+                        <td>{{ field }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <input type="submit" value="Go">
+        </form>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
