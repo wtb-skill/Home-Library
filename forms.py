@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, BooleanField, FileField
+from wtforms import StringField, PasswordField, TextAreaField, BooleanField, FileField, HiddenField
 from wtforms.validators import DataRequired, Email
 
 
@@ -8,4 +8,8 @@ class BooksForm(FlaskForm):
     author = StringField('Author', validators=[DataRequired()])
     description = TextAreaField('Description')
     read_or_not = BooleanField('Read')
+    id = HiddenField()
+
+    def set_id(self, book_id):
+        self.id.data = book_id
 

@@ -16,26 +16,27 @@ class Books:
         return self.books
 
     def get(self, _id):
-        book = [book for book in self.all() if book['id'] == int(_id)]
+        book = [book for book in self.all() if book['id'] == _id]
         if book:
             return book[0]
         return []
 
     def create(self, data):
-        data.pop('csrf_token')
-        data['id'] = int(data.get('id', 0))
         self.books.append(data)
-        self.size += 1
+        self.save_all()
 
     def save_all(self):
         with open("books.json", "w") as file:
             json.dump(self.books, file)
 
-    def update(self, _id, data):
-        data.pop('csrf_token')
-        data['id'] = int(data['id'])
-        self.books[_id] = data
-        self.save_all()
+    def update(self, id, data):
+        book = self.get(id)
+        if book:
+            index = self.books.index(book)
+            self.books[index] = data
+            self.save_all()
+            return True
+        return False
 
     def choose_random(self):
         rng = randint(0, self.size - 1)
@@ -52,6 +53,12 @@ class Books:
 
 
 books = Books()
+
+
+
+
+
+
 
 
 
