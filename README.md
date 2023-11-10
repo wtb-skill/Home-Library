@@ -32,7 +32,7 @@ bash
 
     pip install -r requirements.txt
 
-Getting Started
+## Getting Started
 
     Run the application:
 
@@ -43,7 +43,7 @@ Getting Started
     Access the web interface:
     Open your browser and go to http://127.0.0.1:5000/menu/
 
-Usage
+## Usage
 
     Adding a Book:
         Navigate to http://127.0.0.1:5000/add_book/
@@ -76,6 +76,9 @@ Usage
 - **api_models.py**: Model for handling books for the API.
 - **forms.py**: Flask-WTF forms for book-related forms.
 - **config.py**: Contains config settings.
+- **books.json**: Contains books data in json format.
+- **README.md**: This file.
+- **requirements.txt**: This file helps in managing project dependencies and allows for easy installation of the required packages.
 - **templates/**
   - **base.html**: The base template for other HTML files.
   - **add_book.html**: Template for adding a new book.
