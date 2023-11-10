@@ -40,9 +40,10 @@ class Books:
 
     def choose_random(self):
         unread_books = [book for book in self.books if not book['read']]
-        rng = randint(0, len(unread_books) - 1)
-        chosen_book = unread_books[rng]
-        return chosen_book['id']
+        if unread_books:
+            rng = randint(0, len(unread_books) - 1)
+            chosen_book = unread_books[rng]
+            return chosen_book['id']
 
     def delete(self, _id):
         book = self.get(_id)

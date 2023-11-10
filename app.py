@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, g
+from flask import Flask, request, render_template, redirect, url_for, g, flash
 from forms import BooksForm
 from models import Books
 from api_models import APIBooks
@@ -91,10 +91,15 @@ def details(book_id):
 @app.route("/choose_unread_book/", methods=["GET", "POST"])
 def choose_unread_book():
     chosen_book_id = g.books.choose_random()
-    chosen_book = g.books.get(chosen_book_id)
-    form = BooksForm(data=chosen_book)
 
-    return render_template("edit.html", form=form, books=g.books.all(), book_id=chosen_book_id)
+    if chosen_book_id is not None:
+        chosen_book = g.books.get(chosen_book_id)
+        form = BooksForm(data=chosen_book)
+
+        return render_template("edit.html", form=form, books=g.books.all(), book_id=chosen_book_id)
+    else:
+        flash("No unread books available", "error")
+        return redirect(url_for("library"))
 
 
 # REST API routes
