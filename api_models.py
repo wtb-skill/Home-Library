@@ -22,7 +22,6 @@ class APIBooks:
         return []
 
     def create2(self, data):
-        print("BOOKS 2")
         self.books.append(data)
         self.save_all()
         self.size += 1

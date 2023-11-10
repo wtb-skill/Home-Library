@@ -39,9 +39,10 @@ class Books:
         self.save_all()
 
     def choose_random(self):
-        rng = randint(0, self.size - 1)
-        chosen_book = self.books[rng]
-        return chosen_book
+        unread_books = [book for book in self.books if not book['read']]
+        rng = randint(0, len(unread_books) - 1)
+        chosen_book = unread_books[rng]
+        return chosen_book['id']
 
     def delete(self, _id):
         book = self.get(_id)
@@ -50,6 +51,18 @@ class Books:
             self.save_all()
             return True
         return False
+
+    def sort_by_title(self):
+        sorted_books = sorted(self.books, key=lambda x: x['title'])
+        return sorted_books
+
+    def sort_by_author(self):
+        sorted_books = sorted(self.books, key=lambda x: x['author'])
+        return sorted_books
+
+    def sort_by_read(self):
+        sorted_books = sorted(self.books, key=lambda x: x['read'])
+        return sorted_books
 
 
 

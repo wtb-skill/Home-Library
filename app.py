@@ -2,7 +2,8 @@ from flask import Flask, request, render_template, redirect, url_for, g
 from forms import BooksForm
 from models import Books
 from api_models import APIBooks
-from api_routes import list_books_api_v1, get_book_api_v1, create_book_api_v1, delete_book_api_v1, update_book_api_v1, handle_not_found, handle_bad_request
+from api_routes import list_books_api_v1, get_book_api_v1, create_book_api_v1, delete_book_api_v1, update_book_api_v1, \
+    handle_not_found, handle_bad_request
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -56,6 +57,24 @@ def library():
     return render_template("display.html", form=form, books=g.books.all())
 
 
+@app.route("/display_by_title/", methods=["GET", "POST"])
+def library_by_title():
+    form = BooksForm()
+    return render_template("display.html", form=form, books=g.books.sort_by_title())
+
+
+@app.route("/display_by_author/", methods=["GET", "POST"])
+def library_by_author():
+    form = BooksForm()
+    return render_template("display.html", form=form, books=g.books.sort_by_author())
+
+
+@app.route("/display_by_read/", methods=["GET", "POST"])
+def library_by_read():
+    form = BooksForm()
+    return render_template("display.html", form=form, books=g.books.sort_by_read())
+
+
 @app.route("/display/<int:book_id>/", methods=["GET", "POST"])
 def details(book_id):
     book_id = int(book_id)
@@ -67,6 +86,15 @@ def details(book_id):
             g.books.update(book_id - 1, form.data)
             return redirect(url_for("library"))
     return render_template("edit.html", form=form, books=g.books.all(), book_id=book_id)
+
+
+@app.route("/choose_unread_book/", methods=["GET", "POST"])
+def choose_unread_book():
+    chosen_book_id = g.books.choose_random()
+    chosen_book = g.books.get(chosen_book_id)
+    form = BooksForm(data=chosen_book)
+
+    return render_template("edit.html", form=form, books=g.books.all(), book_id=chosen_book_id)
 
 
 # REST API routes

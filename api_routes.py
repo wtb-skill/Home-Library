@@ -5,18 +5,18 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
 
-def create_books_instance2():
+def create_books_instance():
     return APIBooks()
 
 
 @app.before_request
-def before_request2():
+def before_request():
     # Create a new instance of Books before each request
-    g.books = create_books_instance2()
+    g.books = create_books_instance()
 
 
 @app.teardown_request
-def teardown_request2(exception=None):
+def teardown_request(exception=None):
     # Cleanup after each request
     g.pop('books', None)
 
@@ -43,7 +43,7 @@ def create_book_api_v1():
         'title': request.json['title'],
         'author': request.json['author'],
         'description': request.json.get('description', ""),
-        'read_or_not': False
+        'read': False
     }
     g.books.create2(book)
     return jsonify({'book': book}), 201
@@ -69,7 +69,7 @@ def update_book_api_v1(book_id):
         'title' in data and not isinstance(data.get('title'), str),
         'author' in data and not isinstance(data.get('author'), str),
         'description' in data and not isinstance(data.get('description'), str),
-        'read_or_not' in data and not isinstance(data.get('read_or_not'), bool)
+        'read' in data and not isinstance(data.get('read'), bool)
     ]):
         abort(400)
 
@@ -77,7 +77,7 @@ def update_book_api_v1(book_id):
     book['title'] = data.get('title', book['title'])
     book['author'] = data.get('author', book['author'])
     book['description'] = data.get('description', book['description'])
-    book['read_or_not'] = data.get('read_or_not', book['read_or_not'])
+    book['read'] = data.get('read', book['read'])
 
     g.books.update(book_id, book)
     return jsonify({'book': book})

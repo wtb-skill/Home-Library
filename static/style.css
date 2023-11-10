@@ -73,3 +73,8 @@ table#tdisplay th, td {
     text-align: left;
     border-bottom: 1px solid #ddd; /* Border between rows */
 }
+
+a:visited {
+    color: inherit; /* or specify the color you want */
+    text-decoration: none;
+}
