@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template, redirect, url_for, g
 from forms import BooksForm
 from models import Books
-from rest_api import books_list_api_v1, get_book, create_book, delete_book, update_book, not_found, bad_request
+from api_models import APIBooks
+from api_routes import list_books_api_v1, get_book_api_v1, create_book_api_v1, delete_book_api_v1, update_book_api_v1, handle_not_found, handle_bad_request
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -11,10 +12,16 @@ def create_books_instance():
     return Books()
 
 
+def create_books_instance_api():
+    return APIBooks()
+
+
 @app.before_request
 def before_request():
-    # Create a new instance of Books before each request
-    g.books = create_books_instance()
+    if request.path.startswith('/api/v1/'):
+        g.books = create_books_instance_api()
+    else:
+        g.books = create_books_instance()
 
 
 @app.teardown_request
@@ -63,15 +70,15 @@ def details(book_id):
 
 
 # REST API routes
-app.add_url_rule('/api/v1/books/', 'books_list_api_v1', books_list_api_v1)
-app.add_url_rule('/api/v1/books/<int:book_id>', 'get_book', get_book)
-app.add_url_rule('/api/v1/books/', 'create_book', create_book, methods=['POST'])
-app.add_url_rule('/api/v1/books/<int:book_id>', 'delete_book', delete_book, methods=['DELETE'])
-app.add_url_rule('/api/v1/books/<int:book_id>', 'update_book', update_book, methods=['PUT'])
+app.add_url_rule('/api/v1/books/', 'list_books_api_v1', list_books_api_v1)
+app.add_url_rule('/api/v1/books/<int:book_id>', 'get_book_api_v1', get_book_api_v1)
+app.add_url_rule('/api/v1/books/', 'create_book_api_v1', create_book_api_v1, methods=['POST'])
+app.add_url_rule('/api/v1/books/<int:book_id>', 'delete_book_api_v1', delete_book_api_v1, methods=['DELETE'])
+app.add_url_rule('/api/v1/books/<int:book_id>', 'update_book_api_v1', update_book_api_v1, methods=['PUT'])
 
 # Define error handlers
-app.register_error_handler(404, not_found)
-app.register_error_handler(400, bad_request)
+app.register_error_handler(404, handle_not_found)
+app.register_error_handler(400, handle_bad_request)
 
 
 if __name__ == "__main__":

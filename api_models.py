@@ -2,7 +2,7 @@ import json
 from random import randint
 
 
-class Books:
+class APIBooks:
     def __init__(self):
         try:
             with open("books.json", "r") as file:
@@ -21,16 +21,18 @@ class Books:
             return book[0]
         return []
 
-    def create(self, data):
+    def create2(self, data):
+        print("BOOKS 2")
         self.books.append(data)
         self.save_all()
+        self.size += 1
 
     def save_all(self):
         with open("books.json", "w") as file:
             json.dump(self.books, file)
 
-    def update(self, id, data):
-        book = self.get(id)
+    def update(self, _id, data):
+        book = self.get(_id)
         if book:
             index = self.books.index(book)
             self.books[index] = data
@@ -50,9 +52,6 @@ class Books:
             self.save_all()
             return True
         return False
-
-
-books = Books()
 
 
 

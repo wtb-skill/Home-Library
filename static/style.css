@@ -4,7 +4,7 @@
     --primary-color: #C97543;
     --secondary-color: #E4A781;
     --accent-color: hsl(28, 58%, 70%);
-    --accent-color2: hsl(28, 69%, 79%);
+    --accent-color2: hsl(28, 69%, 88%);
 }
 
 body {
@@ -51,4 +51,25 @@ img {
 div #add_book, #display, #edit {
     grid-row: 2; /* Place the image in the second row */
     grid-column: 2; /* Place the image in the second column */
+}
+
+div#display tr:hover {
+    background-color: var(--accent-color2);
+}
+
+div#display {
+    width: 80%; /* Adjust the width as needed */
+    margin: left; /* Center the table */
+}
+
+table#tdisplay {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Adjust the top margin as needed */
+}
+
+table#tdisplay th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Border between rows */
 }

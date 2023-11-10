@@ -22,6 +22,7 @@ class Books:
         return []
 
     def create(self, data):
+        print("BOOKS")
         data.pop('csrf_token')
         data['id'] = int(data.get('id', 0))
         self.books.append(data)
@@ -51,7 +52,6 @@ class Books:
         return False
 
 
-books = Books()
 
 
 

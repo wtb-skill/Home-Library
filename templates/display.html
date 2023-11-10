@@ -6,7 +6,7 @@
 {% block content %}
     <img src="/static/open_book.jpg" alt="Open Book">
     <div id="display">
-        <table>
+        <table id="tdisplay">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -16,7 +16,8 @@
             </thead>
             {% for book in books %}
                 <tr>
-                    <td><a href="{{ url_for('details', book_id=loop.index) }}">{{ book.title }}</a></td>
+                    <!--<td><a href="{{ url_for('details', book_id=loop.index) }}">{{ book.title }}</a></td>-->
+                    <td><a href="{{ url_for('details', book_id=book['id']) }}">{{ book['title'] }}</a></td>
                     <td>{{ book.author }}</td>
                     {% if book.read_or_not %}
                         <td>yes</td>
