@@ -41,7 +41,7 @@ The Home Library Management System is a Flask-based application that allows user
     python app.py
 
     Access the web interface:
-    Open your browser and go to http://127.0.0.1:5000/menu/
+    Open your browser and go to http://127.0.0.1:5000/
 
 ## Usage
 
