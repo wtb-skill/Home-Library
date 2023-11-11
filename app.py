@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, g, flash
+from flask import Flask, request, render_template, redirect, url_for, g, flash, jsonify
 from forms import BooksForm
 from models import Books
 from api_models import APIBooks
@@ -31,12 +31,12 @@ def teardown_request(exception=None):
     g.pop('books', None)
 
 
-@app.route("/menu/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def library_menu():
     return render_template("menu.html")
 
 
-@app.route("/add_book/", methods=["GET", "POST"])
+@app.route("/books/add/", methods=["GET", "POST"])
 def library_add_book():
     form = BooksForm()
     error = ""
@@ -46,36 +46,37 @@ def library_add_book():
             form.set_id(book_id)
             g.books.create(form.data)
             g.books.save_all()
+            flash('Book successfully added!', 'success')
         return redirect(url_for("library_menu"))
 
     return render_template("add_book.html", form=form, error=error)
 
 
-@app.route("/display/", methods=["GET", "POST"])
+@app.route("/books/", methods=["GET"])
 def library():
     form = BooksForm()
     return render_template("display.html", form=form, books=g.books.all())
 
 
-@app.route("/display_by_title/", methods=["GET", "POST"])
+@app.route("/display_by_title/", methods=["GET"])
 def library_by_title():
     form = BooksForm()
     return render_template("display.html", form=form, books=g.books.sort_by_title())
 
 
-@app.route("/display_by_author/", methods=["GET", "POST"])
+@app.route("/display_by_author/", methods=["GET"])
 def library_by_author():
     form = BooksForm()
     return render_template("display.html", form=form, books=g.books.sort_by_author())
 
 
-@app.route("/display_by_read/", methods=["GET", "POST"])
+@app.route("/display_by_read/", methods=["GET"])
 def library_by_read():
     form = BooksForm()
     return render_template("display.html", form=form, books=g.books.sort_by_read())
 
 
-@app.route("/display/<int:book_id>/", methods=["GET", "POST"])
+@app.route("/books/<int:book_id>/", methods=["GET", "POST"])
 def details(book_id):
     book_id = int(book_id)
     book = g.books.get(book_id)
@@ -84,11 +85,12 @@ def details(book_id):
     if request.method == "POST":
         if form.validate_on_submit():
             g.books.update(book_id - 1, form.data)
+            flash('Book successfully edited!', 'success')
             return redirect(url_for("library"))
     return render_template("edit.html", form=form, books=g.books.all(), book_id=book_id)
 
 
-@app.route("/choose_unread_book/", methods=["GET", "POST"])
+@app.route("/choose_unread_book/", methods=["GET"])
 def choose_unread_book():
     chosen_book_id = g.books.choose_random()
 
@@ -99,7 +101,21 @@ def choose_unread_book():
         return render_template("edit.html", form=form, books=g.books.all(), book_id=chosen_book_id)
     else:
         flash("No unread books available", "error")
-        return redirect(url_for("library"))
+        return redirect(url_for("library_menu"))
+
+
+@app.route("/api/", methods=["GET"])
+def list_routes():
+    routes = []
+
+    for rule in app.url_map.iter_rules():
+        readable_methods = rule.methods
+        readable_methods.discard('OPTIONS')
+        readable_methods.discard('HEAD')
+        methods = ', '.join(readable_methods)
+        routes.append({"endpoint": rule.endpoint, "methods": methods, "path": str(rule)})
+
+    return {"routes": routes}
 
 
 # REST API routes

@@ -12,12 +12,24 @@
 <body>
     <h1>Home Library</h1>
     <div id="base">
-        <a href="http://127.0.0.1:5000/add_book">Add new book</a><br>
-        <a href="http://127.0.0.1:5000/display">Display and edit</a><br>
+        <a href="{{ url_for('library_add_book') }}">Add new book</a><br>
+        <a href="{{ url_for('library') }}">Display and edit</a><br>
         <a href="{{ url_for('choose_unread_book') }}">Choose a book for me to read</a><br>
     </div>
 
     {% block content %}{% endblock %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
 
 
 </body>
