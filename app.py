@@ -45,20 +45,6 @@ def library_add_book():
     return render_template("add_book.html", form=form, error=error)
 
 
-# @app.route("/books/", methods=["GET"])
-# def library():
-#     form = BooksForm()
-#     return render_template("display.html", form=form, books=g.books.all())
-
-# @app.route("/books/", methods=["GET"])
-# def library():
-#     form = BooksForm()
-#     sort_method = request.args.get("sort")
-#
-#     books = g.books.sort_books(sort_method) if sort_method in ["title", "author", "read"] else g.books.all()
-#     return render_template("display.html", form=form, books=books)
-
-
 @app.route("/books/", methods=["GET"])
 def library():
     form = BooksForm()
