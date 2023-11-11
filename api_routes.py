@@ -66,7 +66,7 @@ def update_book_api_v1(book_id):
     return jsonify({'book': book})
 
 
-@app.route("/api/v1/books/choose_unread_book/", methods=["GET"])
+@app.route("/api/v1/choose_unread_book/", methods=["GET"])
 def choose_unread_book_api_v1():
     chosen_book_id = g.books.choose_random()
     if chosen_book_id is not None:

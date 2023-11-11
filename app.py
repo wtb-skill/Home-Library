@@ -30,6 +30,19 @@ def library_menu():
     return render_template("menu.html")
 
 
+@app.route("/books/", methods=["GET"])
+def library():
+    form = BooksForm()
+    sort_method = request.args.get("sort", default="")
+
+    if sort_method in ["title", "author", "read"]:
+        books = getattr(g.books, f"sort_by_{sort_method}")()
+    else:
+        books = g.books.all()
+
+    return render_template("display.html", form=form, books=books)
+
+
 @app.route("/books/add/", methods=["GET", "POST"])
 def library_add_book():
     form = BooksForm()
@@ -43,19 +56,6 @@ def library_add_book():
         return redirect(url_for("library_menu"))
 
     return render_template("add_book.html", form=form, error=error)
-
-
-@app.route("/books/", methods=["GET"])
-def library():
-    form = BooksForm()
-    sort_method = request.args.get("sort", default="")
-
-    if sort_method in ["title", "author", "read"]:
-        books = getattr(g.books, f"sort_by_{sort_method}")()
-    else:
-        books = g.books.all()
-
-    return render_template("display.html", form=form, books=books)
 
 
 @app.route("/books/<int:book_id>/", methods=["GET", "POST"])
@@ -103,7 +103,7 @@ def list_routes():
 
 # REST API routes
 app.add_url_rule('/api/v1/books/', 'list_books_api_v1', list_books_api_v1)
-app.add_url_rule('/api/v1/books/choose_unread_book/', 'choose_unread_book_api_v1', choose_unread_book_api_v1)
+app.add_url_rule('/api/v1/choose_unread_book/', 'choose_unread_book_api_v1', choose_unread_book_api_v1)
 app.add_url_rule('/api/v1/books/<int:book_id>', 'get_book_api_v1', get_book_api_v1)
 app.add_url_rule('/api/v1/books/', 'create_book_api_v1', create_book_api_v1, methods=['POST'])
 app.add_url_rule('/api/v1/books/<int:book_id>', 'delete_book_api_v1', delete_book_api_v1, methods=['DELETE'])
