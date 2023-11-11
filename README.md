@@ -132,7 +132,7 @@ The application is configured using the config.py file.
         Request: JSON object with updated book details.
         Response: JSON object representing the updated book.
 
-Note:
+## Note:
 
     This README assumes default configuration settings.
     For API testing, you can use tools like cURL or Postman.
