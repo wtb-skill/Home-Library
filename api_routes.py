@@ -66,6 +66,16 @@ def update_book_api_v1(book_id):
     return jsonify({'book': book})
 
 
+@app.route("/api/v1/books/choose_unread_book/", methods=["GET"])
+def choose_unread_book_api_v1():
+    chosen_book_id = g.books.choose_random()
+    if chosen_book_id is not None:
+        chosen_book = g.books.get(chosen_book_id)
+        if not chosen_book:
+            abort(404)
+        return jsonify({"book": chosen_book})
+
+
 # Error Handlers:
 @app.errorhandler(404)
 def handle_not_found(error):

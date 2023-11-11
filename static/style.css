@@ -96,3 +96,15 @@ ul.flashes li {
     background-color: #f8d7da; /* You can customize the background color */
     color: #721c24; /* You can customize the text color */
 }
+
+.custom-submit-button {
+    font-family: 'Satisfy', cursive;
+    font-weight: bold; /* Make the font bold */
+    color: var(--text-color); /* White text color */
+    padding: 5px 10px; /* Padding around text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor on hover */
+}
+
+

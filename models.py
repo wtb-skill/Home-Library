@@ -21,6 +21,12 @@ class Books:
             return book[0]
         return []
 
+    # def get(self, _id):
+    #     for book in self.all():
+    #         if book['id'] == int(_id):
+    #             return book
+    #     return None
+
     def create(self, data):
         # Check if 'csrf_token' is present before removing it
         if 'csrf_token' in data:
@@ -64,11 +70,11 @@ class Books:
         return sorted_books
 
     def sort_by_author(self):
-        sorted_books = sorted(self.books, key=lambda x: x['author'])
+        sorted_books = sorted(self.books, key=lambda x: (x['author'], x['title']))
         return sorted_books
 
     def sort_by_read(self):
-        sorted_books = sorted(self.books, key=lambda x: x['read'])
+        sorted_books = sorted(self.books, key=lambda x: (x['read'], x['title']))
         return sorted_books
 
 

@@ -9,14 +9,13 @@
         <table id="tdisplay">
             <thead>
                 <tr>
-                    <th><a href="{{ url_for('library_by_title') }}">Title</a></th>
-                    <th><a href="{{ url_for('library_by_author') }}">Author</a></th>
-                    <th><a href="{{ url_for('library_by_read') }}">Read</a></th>
+                    <th><a href="{{ url_for('library', sort='title') }}">Title</a></th>
+                    <th><a href="{{ url_for('library', sort='author') }}">Author</a></th>
+                    <th><a href="{{ url_for('library', sort='read') }}">Read</a></th>
                 </tr>
             </thead>
             {% for book in books %}
                 <tr>
-                    <!--<td><a href="{{ url_for('details', book_id=loop.index) }}">{{ book.title }}</a></td>-->
                     <td><a href="{{ url_for('details', book_id=book['id']) }}">{{ book['title'] }}</a></td>
                     <td>{{ book.author }}</td>
                     {% if book.read %}
