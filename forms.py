@@ -11,5 +11,5 @@ class BooksForm(FlaskForm):
     read = BooleanField('Read')
 
     def set_id(self, book_id):
-        self.id.data = book_id
+        self.id.data = int(book_id)
 

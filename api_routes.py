@@ -5,18 +5,18 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
 
-def create_books_instance():
+def create_books_instance2():
     return APIBooks()
 
 
 @app.before_request
-def before_request():
+def before_request2():
     # Create a new instance of Books before each request
-    g.books = create_books_instance()
+    g.books = create_books_instance2()
 
 
 @app.teardown_request
-def teardown_request(exception=None):
+def teardown_request2(exception=None):
     # Cleanup after each request
     g.pop('books', None)
 

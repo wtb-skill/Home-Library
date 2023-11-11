@@ -34,9 +34,13 @@ class Books:
 
     def update(self, _id, data):
         data.pop('csrf_token')
-        data['id'] = int(data['id'])
-        self.books[_id] = data
-        self.save_all()
+        book = self.get(_id)
+        if book:
+            index = self.books.index(book)
+            self.books[index] = data
+            self.save_all()
+            return True
+        return False
 
     def choose_random(self):
         unread_books = [book for book in self.books if not book['read']]

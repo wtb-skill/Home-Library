@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, g, flash, jsonify
+from flask import Flask, request, render_template, redirect, url_for, g, flash
 from forms import BooksForm
 from models import Books
 from api_models import APIBooks
@@ -84,7 +84,8 @@ def details(book_id):
 
     if request.method == "POST":
         if form.validate_on_submit():
-            g.books.update(book_id - 1, form.data)
+            form.set_id(book_id)
+            g.books.update(book_id, form.data)
             flash('Book successfully edited!', 'success')
             return redirect(url_for("library"))
     return render_template("edit.html", form=form, books=g.books.all(), book_id=book_id)
