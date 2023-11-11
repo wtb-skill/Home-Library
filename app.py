@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, g, flash
+from flask_wtf.csrf import CSRFProtect
 from forms import BooksForm
 from models import Books
 from api_models import APIBooks
@@ -7,22 +8,29 @@ from api_routes import list_books_api_v1, get_book_api_v1, create_book_api_v1, d
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+# csrf = CSRFProtect(app)
+# Register the API blueprint
+# app.register_blueprint(api_blueprint, url_prefix='/api/v1')
+# csrf.exempt(api_blueprint)
 
 
 def create_books_instance():
     return Books()
 
 
-def create_books_instance_api():
-    return APIBooks()
+# def create_books_instance_api():
+#     return APIBooks()
 
 
 @app.before_request
 def before_request():
-    if request.path.startswith('/api/v1/'):
-        g.books = create_books_instance_api()
-    else:
-        g.books = create_books_instance()
+    g.books = create_books_instance()
+    # if request.path.startswith('/api/v1/'):
+    #     csrf.exempt()
+    # if request.path.startswith('/api/v1/'):
+    #     g.books = create_books_instance_api()
+    # else:
+    #     g.books = create_books_instance()
 
 
 @app.teardown_request
@@ -45,7 +53,7 @@ def library_add_book():
             book_id = g.books.all()[-1]['id'] + 1 if g.books.all() else 1
             form.set_id(book_id)
             g.books.create(form.data)
-            g.books.save_all()
+            # g.books.save_all()  # safe to delete
             flash('Book successfully added!', 'success')
         return redirect(url_for("library_menu"))
 

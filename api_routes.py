@@ -1,24 +1,7 @@
 from flask import Flask, jsonify, abort, make_response, request, g
-from api_models import APIBooks
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-
-
-def create_books_instance2():
-    return APIBooks()
-
-
-@app.before_request
-def before_request2():
-    # Create a new instance of Books before each request
-    g.books = create_books_instance2()
-
-
-@app.teardown_request
-def teardown_request2(exception=None):
-    # Cleanup after each request
-    g.pop('books', None)
 
 
 @app.route("/api/v1/books/", methods=["GET"])
@@ -45,7 +28,7 @@ def create_book_api_v1():
         'description': request.json.get('description', ""),
         'read': False
     }
-    g.books.create2(book)
+    g.books.create(book)
     return jsonify({'book': book}), 201
 
 

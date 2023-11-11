@@ -22,10 +22,11 @@ class Books:
         return []
 
     def create(self, data):
-        print("BOOKS")
-        data.pop('csrf_token')
-        data['id'] = int(data.get('id', 0))
+        # Check if 'csrf_token' is present before removing it
+        if 'csrf_token' in data:
+            data.pop('csrf_token')
         self.books.append(data)
+        self.save_all()
         self.size += 1
 
     def save_all(self):
@@ -33,7 +34,8 @@ class Books:
             json.dump(self.books, file)
 
     def update(self, _id, data):
-        data.pop('csrf_token')
+        if 'csrf_token' in data:
+            data.pop('csrf_token')
         book = self.get(_id)
         if book:
             index = self.books.index(book)
